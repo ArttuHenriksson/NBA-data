@@ -1,0 +1,90 @@
+<ngx-spinner
+  bdColor="rgba(0, 0, 0, 0.8)"
+  size="medium"
+  color="#e50909"
+  type="square-jelly-box"
+  [fullScreen]="true"
+  ><p class="text-nba_white text-lg">
+    Haetaan {{ playername }} tilastoja
+  </p></ngx-spinner
+>
+<!-- Latausspinneri toteutetaan ngxSpinner kirjaston avulla -->
+<div class="flex justify-center text-center mt-5">
+  <!--
+ Kun tämä lomake lähetetään, suoritetaan searchPlayer() metodi.
+ inputti ottaa syötteen vastaa ja päivittää sen playername muuttujaan,
+ sidotaan se siis käyttäen ngModelia.
+  -->
+  <form (ngSubmit)="searchPlayer()">
+    <input
+      type="text"
+      placeholder="Pelaaja"
+      [(ngModel)]="playername"
+      name="playername"
+      required
+      class="rounded-md bg-slate-200 text-black w-72 h-9 text-lg text-center border border-nba_red focus:outline-none focus:border-nba_blue"
+    />
+    <!--Haku nappi-->
+    <button
+      type="submit"
+      class="bg-nba_red hover:bg-nba_blue text-nba_white ml-4 font-bold py-2 px-4 rounded-full"
+    >
+      Search
+    </button>
+  </form>
+</div>
+
+<!-- 
+  Jos virhe on olemassa eli errormessage on true tämä näytetään, käyttäen *ngIf direktiiviä
+  Tässä käytetään fadeIn sekä fadeOut animaatiota -->
+<div
+  @fadeIn
+  @fadeOut
+  *ngIf="errorMessage"
+  class="flex justify-center text-center mt-10 mr-12 text-nba_red text-3xl"
+>
+  {{ errorMessage }}
+</div>
+
+<!-- 
+  Käydään pelaajan kaudet NBA:ssa läpi käyttäen *Ngforia
+  ja näytetään kaudet käyttäen PrimeNG:n accordion componenttia
+
+  Ja näytetään hieman tietoa pelaajan pelatuista kausista.
+-->
+<p-accordion [activeIndex]="-1" class="text-nba_blue" *ngFor="let p of player">
+  <p-accordionTab header="{{ p.season }}">
+    <div class="grid grid-cols-4">
+      <div>
+        <h4 class="text-nba_blue underline">Basic Information</h4>
+        <p>Age: {{ p.age }}</p>
+        <p>Team: {{ p.team }}</p>
+      </div>
+
+      <div>
+        <h4 class="text-nba_blue underline">Point production</h4>
+        <p>Points: {{ p.PTS }}</p>
+        <p>Games played: {{ p.games }}</p>
+        <p>Minutes per game: {{ (p.minutes_played / p.games).toFixed(2) }}</p>
+        <p>Points per game: {{ (p.PTS / p.games).toFixed(2) }}</p>
+      </div>
+
+      <div>
+        <h4 class="text-nba_blue underline">Throwing statistics</h4>
+        <p>Three point % : {{ p.three_percent }} %</p>
+        <p>Two point %: {{ p.two_percent }} %</p>
+        <p>Field goal % {{ p.field_percent }}</p>
+        <p>Free throw % {{ p.ft_percent }} %</p>
+      </div>
+
+      <div>
+        <h4 class="text-nba_blue underline">Ball handling:</h4>
+        <p>Turnovers: {{ p.TOV }}</p>
+        <p>Fouls: {{ p.PF }}</p>
+        <p>Steals: {{ p.STL }}</p>
+        <p>Blocks: {{ p.BLK }}</p>
+        <p></p>
+      </div>
+    </div>
+  </p-accordionTab>
+</p-accordion>

@@ -1,0 +1,65 @@
+<ngx-spinner
+  bdColor="rgba(0, 0, 0, 0.8)"
+  size="medium"
+  color="#e50909"
+  type="square-jelly-box"
+  [fullScreen]="true"
+  ><p class="text-zinc-50">Loading...</p></ngx-spinner
+>
+<!--Latausspinneri-->
+
+<!--
+Tämä on angular materialin taulukko,
+mikä näyttää pistemiesten statsit.
+
+Data taulukkoon tulee rebounds muuttujasta.
+
+-->
+<table mat-table [dataSource]="rebounds" class="mat-elevation-z8">
+  <ng-container matColumnDef="player_name">
+    <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+    <mat-cell *matCellDef="let rebound">{{ rebound.player_name }}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="team">
+    <mat-header-cell *matHeaderCellDef>Team</mat-header-cell>
+    <mat-cell *matCellDef="let rebound">{{ rebound.team }}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="games">
+    <mat-header-cell *matHeaderCellDef>Games</mat-header-cell>
+    <mat-cell *matCellDef="let rebound">{{ rebound.games }}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="ORB">
+    <mat-header-cell *matHeaderCellDef matTooltip="Offensive Rebounds"
+      >ORB</mat-header-cell
+    >
+    <mat-cell *matCellDef="let rebound">
+      {{ rebound.ORB }}
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="DRB">
+    <mat-header-cell *matHeaderCellDef matTooltip="Defensive Rebounds"
+      >DRB</mat-header-cell
+    >
+    <mat-cell *matCellDef="let rebound">{{ rebound.DRB }}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="TRB">
+    <mat-header-cell *matHeaderCellDef matTooltip="Total Rebounds"
+      >TRB</mat-header-cell
+    >
+    <mat-cell *matCellDef="let rebound">{{ rebound.TRB }}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="rbsPerGame">
+    <mat-header-cell *matHeaderCellDef>Rebounds per game</mat-header-cell>
+    <mat-cell *matCellDef="let rebound">{{
+      (rebound.TRB / rebound.games).toFixed(2)
+    }}</mat-cell>
+  </ng-container>
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+</table>

@@ -1,0 +1,70 @@
+<ngx-spinner
+  bdColor="rgba(0, 0, 0, 0.8)"
+  size="medium"
+  color="#e50909"
+  type="square-jelly-box"
+  [fullScreen]="true"
+  ><p class="text-nba_white">Loading...</p></ngx-spinner
+>
+<!--Latausspinneri-->
+
+<!-- 
+Buttoni millä voi vaihtaa statsit playoff-näkymään, eli buttonissa on eventListener (click)
+ja kun painetaan buttonia se suorittaa PlayoffsSelect metodin
+-->
+<div class="flex justify-center text-center mt-3 relative">
+  <button
+    (click)="PlayoffsSelect()"
+    class="bg-nba_red hover:bg-nba_blue text-nba_white font-bold py-2 px-4 rounded-full transition duration-300 relative"
+  >
+    {{ regularSeason ? 'Playoffs' : 'Regular Season' }}
+    <!--
+    Kun regularSeason muuttuja on true näytetään "Regular Season" teksti ja
+    kun taas se on false näytetään "Playoffs" teksti.
+    -->
+    <span
+      class="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-nba_white opacity-75"
+    ></span>
+  </button>
+</div>
+
+<!--
+Tämä on angular materialin taulukko,
+mikä näyttää pistemiesten statsit.
+
+Data taulukkoon tulee scorers muuttujasta.
+ja muuttuja on slicella vedetty että se näyttää vain "top" 20 pelaajaa.
+-->
+<table
+  mat-table
+  [dataSource]="scorers | slice : 0 : 20"
+  class="mat-elevation-z8 mt-6"
+>
+  <ng-container matColumnDef="player_name">
+    <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+    <mat-cell *matCellDef="let scorer"> {{ scorer.player_name }} </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="team">
+    <mat-header-cell *matHeaderCellDef> Team </mat-header-cell>
+    <mat-cell *matCellDef="let scorer"> {{ scorer.team }} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="games">
+    <mat-header-cell *matHeaderCellDef> Games </mat-header-cell>
+    <mat-cell *matCellDef="let scorer"> {{ scorer.games }} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="PTS">
+    <mat-header-cell *matHeaderCellDef>Points</mat-header-cell>
+    <mat-cell *matCellDef="let scorer"> {{ scorer.PTS }} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="pointsPerGame">
+    <mat-header-cell *matHeaderCellDef> Points per game </mat-header-cell>
+    <mat-cell *matCellDef="let scorer">
+      {{ (scorer.PTS / scorer.games).toFixed(2) }}
+    </mat-cell>
+  </ng-container>
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+</table>

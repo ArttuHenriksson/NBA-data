@@ -1,0 +1,67 @@
+<!-- 
+  Latausspinneri
+-->
+<ngx-spinner
+  bdColor="rgba(0, 0, 0, 0.8)"
+  size="medium"
+  color="#e50909"
+  type="square-jelly-box"
+  [fullScreen]="true"
+  ><p class="text-zinc-50">Loading...</p></ngx-spinner
+>
+<!-- 
+Buttoni millä voi vaihtaa statsit playoff-näkymään, eli buttonissa on eventListener (click)
+ja kun painetaan buttonia se suorittaa PlayoffsSelect metodin
+-->
+<div class="flex justify-center text-center mt-3 relative">
+  <button
+    (click)="PlayoffsSelect()"
+    class="bg-nba_red hover:bg-nba_blue text-nba_white font-bold py-2 px-4 rounded-full transition duration-300 relative"
+  >
+    <!-- ternary -->
+    {{ regularSeason ? 'Playoffs' : 'Regular Season' }}
+    <span
+      class="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-nba_white opacity-75"
+    ></span>
+    <!--
+    Kun regularSeason muuttuja on true näytetään "Regular Season" teksti ja
+    kun taas se on false näytetään "Playoffs" teksti.
+    -->
+  </button>
+</div>
+
+<!--
+Tämä on angular materialin taulukko,
+mikä näyttää pistemiesten statsit.
+
+Data taulukkoon tulee assists muuttujasta.
+-->
+<table mat-table [dataSource]="assists" class="mat-elevation-z8 mt-6">
+  <ng-container matColumnDef="player_name">
+    <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+    <mat-cell *matCellDef="let assist"> {{ assist.player_name }} </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="team">
+    <mat-header-cell *matHeaderCellDef> Team </mat-header-cell>
+    <mat-cell *matCellDef="let assist"> {{ assist.team }} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="games">
+    <mat-header-cell *matHeaderCellDef> Games </mat-header-cell>
+    <mat-cell *matCellDef="let assist"> {{ assist.games }} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="AST">
+    <mat-header-cell *matHeaderCellDef>Assists</mat-header-cell>
+    <mat-cell *matCellDef="let assist"> {{ assist.AST }} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="astPerGame">
+    <mat-header-cell *matHeaderCellDef> Assists per game </mat-header-cell>
+    <mat-cell *matCellDef="let assist">
+      {{ (assist.AST / assist.games).toFixed(2) }}
+    </mat-cell>
+  </ng-container>
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+</table>
